@@ -9,9 +9,9 @@ public class ProductParser {
     private static final String COMMA = ",";
 
 
-    public List<Product> parse(String input) {
+    public Products parse(String input) {
         String[] tokens = input.split(SEMI_COLON);
-        return parseTokens(tokens);
+        return new Products(parseTokens(tokens));
     }
 
     private List<Product> parseTokens(String[] tokens) {
