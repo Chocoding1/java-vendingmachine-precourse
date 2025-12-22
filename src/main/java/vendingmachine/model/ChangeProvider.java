@@ -1,7 +1,6 @@
 package vendingmachine.model;
 
 import java.util.EnumMap;
-import vendingmachine.Coin;
 
 public class ChangeProvider {
 

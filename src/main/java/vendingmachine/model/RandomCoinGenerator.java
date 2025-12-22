@@ -2,7 +2,6 @@ package vendingmachine.model;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.EnumMap;
-import vendingmachine.Coin;
 
 public class RandomCoinGenerator {
 

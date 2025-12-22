@@ -2,7 +2,7 @@ package vendingmachine.controller;
 
 import java.util.EnumMap;
 import java.util.List;
-import vendingmachine.Coin;
+import vendingmachine.model.Coin;
 import vendingmachine.model.ChangeProvider;
 import vendingmachine.model.PayAmount;
 import vendingmachine.model.Product;

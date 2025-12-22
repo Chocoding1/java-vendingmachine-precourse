@@ -1,9 +1,8 @@
-package vendingmachine;
+package vendingmachine.model;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import vendingmachine.model.PayAmount;
 
 public enum Coin {
     COIN_500(500, "500원 - %d개\n"),
