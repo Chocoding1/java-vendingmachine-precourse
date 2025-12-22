@@ -38,8 +38,8 @@ public enum Coin {
         return printFormat;
     }
 
-    public boolean isLarge(PayAmount payAmount) {
-        return payAmount.isLess(amount);
+    public boolean isLess(PayAmount payAmount) {
+        return !payAmount.isLess(amount);
     }
 
     public int getAmount() {
