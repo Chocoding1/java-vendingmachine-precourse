@@ -15,11 +15,10 @@ public class ChangeProvider {
         EnumMap<Coin, Integer> change = new EnumMap<>(Coin.class);
 
         for (Coin coin : Coin.values()) {
-            if (availableCoins.get(coin) > 0) {
-                while (!coin.isLarge(payAmount)) {
-                    change.put(coin, change.getOrDefault(coin, 0) + 1);
-                    payAmount.minus(coin.getAmount());
-                }
+            while (availableCoins.get(coin) > 0 && coin.isLess(payAmount)) {
+                change.put(coin, change.getOrDefault(coin, 0) + 1);
+                availableCoins.put(coin, availableCoins.get(coin) - 1);
+                payAmount.minus(coin.getAmount());
             }
         }
 
