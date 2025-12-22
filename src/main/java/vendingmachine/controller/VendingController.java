@@ -1,9 +1,12 @@
 package vendingmachine.controller;
 
+import static vendingmachine.model.ExceptionHandler.*;
+
 import java.util.EnumMap;
 import java.util.List;
 import vendingmachine.model.Coin;
 import vendingmachine.model.ChangeProvider;
+import vendingmachine.model.ExceptionHandler;
 import vendingmachine.model.PayAmount;
 import vendingmachine.model.Product;
 import vendingmachine.model.ProductParser;
@@ -31,20 +34,19 @@ public class VendingController {
     }
 
     public void run() {
-        VendingMoney vendingMoney = getVendingMoney();
+        VendingMoney vendingMoney = repeatUntilSuccess(this::getVendingMoney);
         EnumMap<Coin, Integer> availableCoins = randomCoinGenerator.generate(vendingMoney);
         outputView.printAvailableCoins(availableCoins);
         String input = inputView.getProductsInfo();
-        List<Product> products = productParser.parse(input);
+        List<Product> products = productParser.parse(input); // 예외 처리 필요
         int minPrice = getMinPrice(products);
-        input = inputView.getPayAmount();
-        PayAmount payAmount = new PayAmount(input);
+        PayAmount payAmount = repeatUntilSuccess(this::getPayAmount);
 
         while (true) {
             outputView.printRemainAmount(payAmount);
 
             String productName = inputView.getProductName();
-            Product findProduct = findProduct(products, productName, payAmount);
+            Product findProduct = repeatUntilSuccess(() -> findProduct(products, productName, payAmount));
             vendingProcessor.sell(findProduct, payAmount);
 
             if (payAmount.isLess(minPrice)) {
@@ -69,6 +71,11 @@ public class VendingController {
             minPrice = Math.min(minPrice, product.getPrice());
         }
         return minPrice;
+    }
+
+    private PayAmount getPayAmount() {
+        String input = inputView.getPayAmount();
+        return new PayAmount(input);
     }
 
     // 최적화 필수 메서드
