@@ -5,11 +5,21 @@ public class PayAmount {
     private int amount;
 
     public PayAmount(String input) {
-        this.amount = convertToInt(input);
+        int amount = convertToInt(input);
+        checkPositive(amount);
+        this.amount = amount;
     }
 
     public int getAmount() {
         return amount;
+    }
+
+    public boolean isLess(int price) {
+        return amount < price;
+    }
+
+    public void minus(int price) {
+        amount -= price;
     }
 
     private int convertToInt(String input) {
@@ -20,11 +30,9 @@ public class PayAmount {
         }
     }
 
-    public boolean isLess(int price) {
-        return amount < price;
-    }
-
-    public void minus(int price) {
-        amount -= price;
+    private void checkPositive(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("[ERROR] 투입 금액은 0 이상이어야 합니다.");
+        }
     }
 }
