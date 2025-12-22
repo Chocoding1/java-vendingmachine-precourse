@@ -50,8 +50,10 @@ public class Product {
         }
     }
 
-    public boolean isSoldOut() {
-        return remain == 0;
+    public void checkSoldOut() {
+        if (remain == 0) {
+            throw new IllegalArgumentException("[ERROR] 상품이 매진되었습니다.");
+        }
     }
 
     public void sell(PayAmount payAmount) {
