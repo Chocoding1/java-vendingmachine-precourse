@@ -53,8 +53,8 @@ public class VendingController {
         }
 
         ChangeProvider changeProvider = new ChangeProvider(availableCoins);
-        EnumMap<Coin, Integer> change = changeProvider.getChange(payAmount);
         outputView.printRemainAmount(payAmount);
+        EnumMap<Coin, Integer> change = changeProvider.getChange(payAmount);
         outputView.printChange(change);
     }
 
