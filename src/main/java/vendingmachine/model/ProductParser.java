@@ -1,6 +1,6 @@
 package vendingmachine.model;
 
-import static vendingmachine.model.ErrorMessage.*;
+import static vendingmachine.model.ErrorCode.*;
 
 import java.util.Arrays;
 import java.util.List;
