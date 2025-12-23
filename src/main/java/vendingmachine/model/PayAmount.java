@@ -18,7 +18,7 @@ public class PayAmount {
         return amount < price;
     }
 
-    public void minus(int price) {
+    public void subtract(int price) {
         amount -= price;
     }
 

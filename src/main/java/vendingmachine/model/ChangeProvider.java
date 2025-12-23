@@ -17,7 +17,7 @@ public class ChangeProvider {
             while (availableCoins.get(coin) > 0 && coin.isLess(payAmount)) {
                 change.put(coin, change.getOrDefault(coin, 0) + 1);
                 availableCoins.put(coin, availableCoins.get(coin) - 1);
-                payAmount.minus(coin.getAmount());
+                payAmount.subtract(coin.getAmount());
             }
         }
 
