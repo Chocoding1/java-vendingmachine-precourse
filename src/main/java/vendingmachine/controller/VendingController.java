@@ -11,7 +11,6 @@ import vendingmachine.model.ProductParser;
 import vendingmachine.model.Products;
 import vendingmachine.model.RandomCoinGenerator;
 import vendingmachine.model.VendingMoney;
-import vendingmachine.model.VendingProcessor;
 import vendingmachine.view.InputView;
 import vendingmachine.view.OutputView;
 
@@ -21,15 +20,13 @@ public class VendingController {
     private final RandomCoinGenerator randomCoinGenerator;
     private final OutputView outputView;
     private final ProductParser productParser;
-    private final VendingProcessor vendingProcessor;
 
     public VendingController(InputView inputView, RandomCoinGenerator randomCoinGenerator, OutputView outputView,
-                             ProductParser productParser, VendingProcessor vendingProcessor) {
+                             ProductParser productParser) {
         this.inputView = inputView;
         this.randomCoinGenerator = randomCoinGenerator;
         this.outputView = outputView;
         this.productParser = productParser;
-        this.vendingProcessor = vendingProcessor;
     }
 
     public void run() {
@@ -43,8 +40,8 @@ public class VendingController {
         while (true) {
             outputView.printRemainAmount(payAmount);
 
-            Product findProduct = repeatUntilSuccess(() -> findProduct(products, payAmount));
-            vendingProcessor.sell(findProduct, payAmount);
+            Product findProduct = repeatUntilSuccess(() -> findProduct(products));
+            findProduct.sell(payAmount);
 
             if (payAmount.isLess(minPrice)) {
                 break;
@@ -72,8 +69,8 @@ public class VendingController {
         return new PayAmount(input);
     }
 
-    private Product findProduct(Products products, PayAmount payAmount) {
+    private Product findProduct(Products products) {
         String productName = inputView.getProductName();
-        return products.find(productName, payAmount);
+        return products.findByName(productName);
     }
 }

@@ -1,63 +1,82 @@
 package vendingmachine.model;
 
+import static vendingmachine.model.ErrorCode.*;
+
 public class Product {
+
+    private static final int MIN_PRICE = 100;
+    private static final int PRICE_UNITS = 10;
 
     private final String name;
     private final int price;
-    private int remain;
+    private int stock;
 
-    public Product(String name, String initialPrice, String initialRemain) {
+    public Product(String name, String initialPrice, String initialStock) {
         this.name = name;
-        int price = convertToInt(initialPrice);
-        validatePrice(price);
-        this.price = price;
-        this.remain = convertToInt(initialRemain);
+        this.price = parsePrice(initialPrice);
+        this.stock = parseStock(initialStock);
     }
 
-    private int convertToInt(String initialPrice) {
-        try {
-            return Integer.parseInt(initialPrice);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("[ERROR] 상품 가격과 수량은 정수 형태여야 합니다.");
-        }
-    }
-
-    private void validatePrice(int price) {
-        if (price < 100) {
-            throw new IllegalArgumentException("[ERROR] 상품 가격은 100원 이상이어야 합니다.");
-        }
-
-        if (price % 10 != 0) {
-            throw new IllegalArgumentException("[ERROR] 상품 가격은 10으로 나누어 떨어져야 합니다.");
-        }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getPrice() {
-        return price;
+    public int lowerPrice(int otherPrice) {
+        return Math.min(price, otherPrice);
     }
 
     public boolean isSameName(String productName) {
         return name.equals(productName);
     }
 
-    public void checkPrice(PayAmount payAmount) {
-        if (payAmount.isLess(price)) {
-            throw new IllegalArgumentException("[ERROR] 금액이 부족합니다.");
-        }
-    }
-
-    public void checkSoldOut() {
-        if (remain == 0) {
-            throw new IllegalArgumentException("[ERROR] 상품이 매진되었습니다.");
-        }
-    }
-
     public void sell(PayAmount payAmount) {
-        remain--;
-        payAmount.minus(price);
+        validateInStock();
+        validateAffordable(payAmount);
+        stock--;
+        payAmount.subtract(price);
+    }
+
+    private int parsePrice(String initialPrice) {
+        int price = convertToInt(initialPrice, ERR_PRODUCT_PRICE_INTEGER);
+        validateAffordable(price);
+        return price;
+    }
+
+    private void validateAffordable(int price) {
+        if (price < MIN_PRICE) {
+            throw new IllegalArgumentException(ERR_PRODUCT_PRICE_RANGE.getMessage());
+        }
+
+        if (price % PRICE_UNITS != 0) {
+            throw new IllegalArgumentException(ERR_PRODUCT_PRICE_UNITS.getMessage());
+        }
+    }
+
+    private int parseStock(String initialStock) {
+        int stock = convertToInt(initialStock, ERR_PRODUCT_STOCK_INTEGER);
+        validateStock(stock);
+        return stock;
+    }
+
+    private void validateStock(int stock) {
+        if (stock < 0) {
+            throw new IllegalArgumentException(ERR_PRODUCT_STOCK_NOT_NEGATIVE.getMessage());
+        }
+    }
+
+    private int convertToInt(String initialPrice, ErrorCode errorCode) {
+        try {
+            return Integer.parseInt(initialPrice);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(errorCode.getMessage());
+        }
+    }
+
+    private void validateInStock() {
+        if (stock == 0) {
+            throw new IllegalArgumentException(ERR_OUT_OF_STOCK.getMessage());
+        }
+    }
+
+    private void validateAffordable(PayAmount payAmount) {
+        if (payAmount.isLess(price)) {
+            throw new IllegalArgumentException(ERR_INSUFFICIENT_PAY_AMOUNT.getMessage());
+        }
     }
 }

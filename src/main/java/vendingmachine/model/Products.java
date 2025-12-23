@@ -13,16 +13,14 @@ public class Products {
     public int minPrice() {
         int minPrice = Integer.MAX_VALUE;
         for (Product product : products) {
-            minPrice = Math.min(minPrice, product.getPrice());
+            minPrice = product.lowerPrice(minPrice);
         }
         return minPrice;
     }
 
-    public Product find(String productName, PayAmount payAmount) {
+    public Product findByName(String productName) {
         for (Product product : products) {
             if (product.isSameName(productName)) {
-                product.checkPrice(payAmount);
-                product.checkSoldOut();
                 return product;
             }
         }
