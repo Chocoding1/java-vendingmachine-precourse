@@ -17,6 +17,8 @@ public enum ErrorCode {
 
     ERR_OUT_OF_STOCK("[ERROR] 상품이 품절되었습니다."),
     ERR_INSUFFICIENT_PAY_AMOUNT("[ERROR] 구입 금액이 부족합니다."),
+
+    ERR_PRODUCTS_NOT_FOUND("[ERROR] 존재하지 않는 상품입니다."),
     ;
 
 

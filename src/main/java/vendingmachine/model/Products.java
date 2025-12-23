@@ -1,5 +1,8 @@
 package vendingmachine.model;
 
+import static vendingmachine.model.ErrorCode.ERR_PRODUCTS_NOT_FOUND;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Products {
@@ -7,10 +10,14 @@ public class Products {
     private final List<Product> products;
 
     public Products(List<Product> products) {
-        this.products = products;
+        this.products = new ArrayList<>(products); // 불변 복사
     }
 
-    public int minPrice() {
+    public int getMinPrice() {
+        if (isEmpty()) {
+            return 0;
+        }
+
         int minPrice = Integer.MAX_VALUE;
         for (Product product : products) {
             minPrice = product.lowerPrice(minPrice);
@@ -24,6 +31,10 @@ public class Products {
                 return product;
             }
         }
-        throw new IllegalArgumentException("[ERROR] 존재하지 않는 상품입니다.");
+        throw new IllegalArgumentException(ERR_PRODUCTS_NOT_FOUND.getMessage());
+    }
+
+    private boolean isEmpty() {
+        return products.isEmpty();
     }
 }

@@ -34,7 +34,7 @@ public class VendingController {
         EnumMap<Coin, Integer> availableCoins = randomCoinGenerator.generate(vendingMoney);
         outputView.printAvailableCoins(availableCoins);
         Products products = repeatUntilSuccess(this::getProducts);
-        int minPrice = products.minPrice();
+        int minPrice = products.getMinPrice();
         PayAmount payAmount = repeatUntilSuccess(this::getPayAmount);
 
         while (true) {
