@@ -3,7 +3,6 @@ package vendingmachine.config;
 import vendingmachine.controller.VendingController;
 import vendingmachine.model.ProductParser;
 import vendingmachine.model.RandomCoinGenerator;
-import vendingmachine.model.VendingProcessor;
 import vendingmachine.view.InputView;
 import vendingmachine.view.OutputView;
 
@@ -14,12 +13,11 @@ public class AppConfig {
     private RandomCoinGenerator randomCoinGenerator;
     private OutputView outputView;
     private ProductParser productParser;
-    private VendingProcessor vendingProcessor;
 
     public VendingController vendingController() {
         if (vendingController == null) {
-            vendingController = new VendingController(inputView(), randomCoinGenerator(), outputView(), productParser(),
-                    vendingProcessor());
+            vendingController = new VendingController(inputView(), randomCoinGenerator(), outputView(),
+                    productParser());
         }
         return vendingController;
     }
@@ -50,12 +48,5 @@ public class AppConfig {
             productParser = new ProductParser();
         }
         return productParser;
-    }
-
-    private VendingProcessor vendingProcessor() {
-        if (vendingProcessor == null) {
-            vendingProcessor = new VendingProcessor();
-        }
-        return vendingProcessor;
     }
 }
