@@ -1,12 +1,15 @@
 package vendingmachine.model;
 
+import static vendingmachine.model.ErrorCode.ERR_PAY_AMOUNT_INTEGER;
+import static vendingmachine.model.ErrorCode.ERR_PAY_AMOUNT_NOT_NEGATIVE;
+
 public class PayAmount {
 
     private int amount;
 
     public PayAmount(String input) {
         int amount = convertToInt(input);
-        checkPositive(amount);
+        validateNotNegative(amount);
         this.amount = amount;
     }
 
@@ -14,7 +17,7 @@ public class PayAmount {
         return amount;
     }
 
-    public boolean isLess(int price) {
+    public boolean isLessThan(int price) {
         return amount < price;
     }
 
@@ -26,13 +29,13 @@ public class PayAmount {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("[ERROR] 투입 금액은 정수 형태여야 합니다.");
+            throw new IllegalArgumentException(ERR_PAY_AMOUNT_INTEGER.getMessage());
         }
     }
 
-    private void checkPositive(int amount) {
+    private void validateNotNegative(int amount) {
         if (amount < 0) {
-            throw new IllegalArgumentException("[ERROR] 투입 금액은 0 이상이어야 합니다.");
+            throw new IllegalArgumentException(ERR_PAY_AMOUNT_NOT_NEGATIVE.getMessage());
         }
     }
 }

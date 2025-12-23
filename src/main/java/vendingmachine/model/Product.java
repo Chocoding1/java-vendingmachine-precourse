@@ -75,7 +75,7 @@ public class Product {
     }
 
     private void validateAffordable(PayAmount payAmount) {
-        if (payAmount.isLess(price)) {
+        if (payAmount.isLessThan(price)) {
             throw new IllegalArgumentException(ERR_INSUFFICIENT_PAY_AMOUNT.getMessage());
         }
     }

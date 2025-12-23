@@ -19,6 +19,9 @@ public enum ErrorCode {
     ERR_INSUFFICIENT_PAY_AMOUNT("[ERROR] 구입 금액이 부족합니다."),
 
     ERR_PRODUCTS_NOT_FOUND("[ERROR] 존재하지 않는 상품입니다."),
+
+    ERR_PAY_AMOUNT_INTEGER("[ERROR] 투입 금액은 정수 형태여야 합니다."),
+    ERR_PAY_AMOUNT_NOT_NEGATIVE("[ERROR] 투입 금액은 0 이상이어야 합니다."),
     ;
 
 

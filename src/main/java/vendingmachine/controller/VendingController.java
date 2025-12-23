@@ -43,7 +43,7 @@ public class VendingController {
             Product findProduct = repeatUntilSuccess(() -> findProduct(products));
             findProduct.sell(payAmount);
 
-            if (payAmount.isLess(minPrice)) {
+            if (payAmount.isLessThan(minPrice)) {
                 break;
             }
         }
