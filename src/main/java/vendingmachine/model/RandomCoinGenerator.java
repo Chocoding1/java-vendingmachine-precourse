@@ -7,14 +7,13 @@ public class RandomCoinGenerator {
 
     public EnumMap<Coin, Integer> generate(VendingMoney vendingMoney) {
         EnumMap<Coin, Integer> availableCoins = setAvailableCoins();
-        int money = vendingMoney.getMoney();
 
-        while (money != 0) {
+        while (vendingMoney.isAffordable()) {
             int amount = Randoms.pickNumberInList(Coin.getAmounts());
-            if (amount <= money) {
+            if (vendingMoney.isGreaterThan(amount)) {
                 Coin coin = Coin.of(amount);
                 availableCoins.put(coin, availableCoins.get(coin) + 1);
-                money -= amount;
+                vendingMoney.subtract(amount);
             }
         }
         return availableCoins;
