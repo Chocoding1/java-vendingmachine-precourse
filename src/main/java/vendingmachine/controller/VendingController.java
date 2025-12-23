@@ -30,19 +30,16 @@ public class VendingController {
     }
 
     public void run() {
-        VendingMoney vendingMoney = repeatUntilSuccess(this::getVendingMoney);
+        VendingMoney vendingMoney = repeatSupplierUntilSuccess(this::getVendingMoney);
         EnumMap<Coin, Integer> availableCoins = randomCoinGenerator.generate(vendingMoney);
         outputView.printAvailableCoins(availableCoins);
-        Products products = repeatUntilSuccess(this::getProducts);
+        Products products = repeatSupplierUntilSuccess(this::getProducts);
         int minPrice = products.getMinPrice();
-        PayAmount payAmount = repeatUntilSuccess(this::getPayAmount);
+        PayAmount payAmount = repeatSupplierUntilSuccess(this::getPayAmount);
 
         while (true) {
             outputView.printRemainAmount(payAmount);
-
-            Product findProduct = repeatUntilSuccess(() -> findProduct(products));
-            findProduct.sell(payAmount);
-
+            repeatRunnableUntilSuccess(() -> vend(products, payAmount));
             if (payAmount.isLessThan(minPrice)) {
                 break;
             }
@@ -67,6 +64,11 @@ public class VendingController {
     private PayAmount getPayAmount() {
         String input = inputView.getPayAmount();
         return new PayAmount(input);
+    }
+
+    private void vend(Products products, PayAmount payAmount) {
+        Product findProduct = findProduct(products);
+        findProduct.sell(payAmount);
     }
 
     private Product findProduct(Products products) {
